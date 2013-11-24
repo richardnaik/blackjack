@@ -1,31 +1,42 @@
-import deck
+from deck import Deck
 
 class BlackJack(object):
 	def __init__(self, bet):
-        self.bet = bet
-		self.player_total = 0
-		self.dealer_total = 0
-		self.player_win = False
-		self.dealer_win = True
+			self.bet = bet
+			self.player_total = 0
+			self.dealer_total = 0
+			self.player_stand = False
+			self.player_win = False
+			self.dealer_win = False
 	
 	#the game loop
 	def play(self):
 		#draw the first four cards for the player and dealer
-		deck = new Deck()
+		deck = Deck()
 		self.player_total += deck.draw()
 		self.dealer_total += deck.draw()
 		self.player_total += deck.draw()
 		self.dealer_total += deck.draw()
 		
-		while(self.player_win == False && self.dealer_win == False):
-			if self.player_total == 21
-			draw = raw_input('Draw another card? Y/N ')
+		while(self.player_win == False and self.dealer_win == False):
+			if (self.dealer_total == 21 or self.player_total > 21) or (self.player_stand == True and self.dealer_total > self.player_total):
+				self.dealer_win == True
+			elif (self.player_total == 21 and self.dealer_total < 21) or (self.player_stand == True and self.player_total > self.dealer_total):
+				self.player_win = True
+			else:
+				if self.player_stand == False:
+					draw = raw_input('Draw another card? Y/N ')
+				else:
+					draw = 'N'
 			
 			if draw == 'Y':
 				self.player_total += deck.draw()
-				self.dealer_total += deck.draw()
 			elif draw == 'N':
-				#dealer draws until he beats player or busts
+				self.player_stand = True
+				while(self.dealer_total >= self.player_total):
+					self.dealer_total += deck.draw()
+			else:
+				print 'Error: unrecognized option. Please try again'
 		else:
 			if self.player_win == True:
 				print 'You won! Enjoy your %f dollars!' % bet
