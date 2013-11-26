@@ -19,9 +19,14 @@ class BlackJack(object):
 		self.dealer_total += deck.draw()
 		
 		while(self.player_win == False and self.dealer_win == False):
-			if (self.dealer_total == 21 or self.player_total > 21) or (self.player_stand == True and self.dealer_total > self.player_total):
+			#Print the totals on each pass
+			print 'You have: %d' % self.player_total
+			print 'Dealer has: %d' % self.dealer_total
+			
+			if self.dealer_total == 21 or self.player_total > 21 or (self.player_stand == True and self.dealer_total >= self.player_total):
 				self.dealer_win == True
-			elif (self.player_total == 21 and self.dealer_total < 21) or (self.player_stand == True and self.player_total > self.dealer_total):
+			elif self.dealer_total > 21 or (self.player_stand == True and self.player_total > self.dealer_total):
+				print 'xxxxxx'
 				self.player_win = True
 			else:
 				if self.player_stand == False:
@@ -31,16 +36,18 @@ class BlackJack(object):
 			
 			if draw == 'Y':
 				self.player_total += deck.draw()
+				#print 'You have: %d' % self.player_total
 			elif draw == 'N':
 				self.player_stand = True
-				while(self.dealer_total >= self.player_total):
+				while(self.player_total >= self.dealer_total):
 					self.dealer_total += deck.draw()
+					#print 'Dealer has: %d' % self.dealer_total
 			else:
 				print 'Error: unrecognized option. Please try again'
 		else:
 			if self.player_win == True:
-				print 'You won! Enjoy your %f dollars!' % bet
+				print 'You won! Enjoy your %s dollars!' % self.bet
 			elif self.dealer_win == True:
-				print 'You lost-your sweet %f dollars are mine! HAHAHAHAHAH!' % bet
+				print 'You lost-your sweet %s dollars are mine! HAHAHAHAHAH!' % self.bet
 			else:
 				print 'It seems the only winning move is not to play....'
