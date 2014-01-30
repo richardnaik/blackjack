@@ -1,4 +1,5 @@
 from deck import Deck
+import sys
 
 class BlackJack(object):
 	def __init__(self, bet):
@@ -23,10 +24,9 @@ class BlackJack(object):
 			print 'You have: %d' % self.player_total
 			print 'Dealer has: %d' % self.dealer_total
 			
-			if self.dealer_total == 21 or self.player_total > 21 or (self.player_stand == True and self.dealer_total >= self.player_total):
-				self.dealer_win == True
+			if self.dealer_total == 21 or self.player_total > 21 or (self.player_stand == True and self.dealer_total >= self.player_total and self.dealer_total <= 21):
+				self.dealer_win = True
 			elif self.dealer_total > 21 or (self.player_stand == True and self.player_total > self.dealer_total):
-				print 'xxxxxx'
 				self.player_win = True
 			else:
 				if self.player_stand == False:
@@ -34,20 +34,19 @@ class BlackJack(object):
 				else:
 					draw = 'N'
 			
-			if draw == 'Y':
-				self.player_total += deck.draw()
-				#print 'You have: %d' % self.player_total
-			elif draw == 'N':
-				self.player_stand = True
-				while(self.player_total >= self.dealer_total):
-					self.dealer_total += deck.draw()
-					#print 'Dealer has: %d' % self.dealer_total
-			else:
-				print 'Error: unrecognized option. Please try again'
+			if self.player_win == False and self.dealer_win == False:
+				if draw == 'Y':				
+					self.player_total += deck.draw()
+				elif draw == 'N':
+					self.player_stand = True
+					while(self.player_total >= self.dealer_total):
+						self.dealer_total += deck.draw()
+				else:
+					print 'Error: unrecognized option. Please try again'
+
+		if self.player_win == True:
+			print 'You won! Enjoy your %s dollars!' % self.bet
+		elif self.dealer_win == True:
+			print 'You lost-your sweet %s dollars are mine! HAHAHAHAHAH!' % self.bet
 		else:
-			if self.player_win == True:
-				print 'You won! Enjoy your %s dollars!' % self.bet
-			elif self.dealer_win == True:
-				print 'You lost-your sweet %s dollars are mine! HAHAHAHAHAH!' % self.bet
-			else:
-				print 'It seems the only winning move is not to play....'
+			print 'It seems the only winning move is not to play....'
